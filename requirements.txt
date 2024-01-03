@@ -3,4 +3,4 @@ openai
 huggingface_hub
 streamlit
 python-dotenv
-
+flask
