@@ -11,3 +11,11 @@ import os
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# Loading environment variables from .env file
+load_dotenv()
+
+
