@@ -5,3 +5,4 @@ streamlit
 python-dotenv
 flask
 django
+Flask==2.3.2
