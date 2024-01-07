@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversational Chatbot</title>
 </head>
 <body>
-    <div>
-        {% block content %}{% endblock %}
-    </div>
+    <h1>Hey, Let's Chat</h1>
+    <form action="/chat" method="post">
+        <label for="input_text">Input:</label>
+        <input type="text" id="input_text" name="input_text" required>
+        <button type="submit">Ask me</button>
+    </form>
+
+    {% for message in flow %}
+        {% if message.__class__.__name__ == "HumanMessage" %}
+            <p>You: {{ message.content }}</p>
+        {% elif message.__class__.__name__ == "AIMessage" %}
+            <p>AI: {{ message.content }}</p>
+        {% endif %}
+    {% endfor %}
+    
 </body>
 </html>
