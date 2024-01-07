@@ -35,10 +35,10 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    input = request.form['input_text']
-    response = get_openai_response(input)
+    input_text = request.form['input_text']
+    response = get_openai_response(input_text)
 
-    return render_template('index.html', input_text=input, response=response, flow=flow)
+    return render_template('index.html', input_text=input_text, response=response, flow=flow)
 
 if __name__ == '__main__':
     app.run(debug=True)
