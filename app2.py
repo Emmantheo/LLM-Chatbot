@@ -4,7 +4,7 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.agents import initialize_agent, AgentType, load_tools
 from langchain.llms import OpenAI
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, session
 from dotenv import load_dotenv
 import os
 
@@ -16,15 +16,19 @@ load_dotenv()
 api_key = os.getenv("OPEN_AI_KEY")
 
 #initialising the chat
-chat = ChatOpenAI(api_key=api_key, temperature=0.5)
 
-#initializing the flow
-flow= [SystemMessage(content="You are are a financial adviser AI assistant")]
+
+if 'flow' not in session:
+    session['flow'] = [
+        SystemMessage(content="You are a financial adviser AI assistant")
+    ]
+
 
 def get_openai_response(question):
-    flow.append(HumanMessage(content=question))
-    answer=chat(flow)
-    flow.append(AIMessage(content=answer.content))
+    session['flow'].append(HumanMessage(content=question))
+    chat = ChatOpenAI(api_key=api_key, temperature=0.5)
+    answer=chat(session['flow'])
+    session['flow'].append(AIMessage(content=answer.content))
 
     return answer.content
 
@@ -38,7 +42,7 @@ def chat():
     input_text = request.form['input_text']
     response = get_openai_response(input_text)
 
-    return render_template('index.html', input_text=input_text, response=response, flow=flow)
+    return render_template('index.html', input_text=input_text, response=response)
 
 if __name__ == '__main__':
     app.run(debug=True)
