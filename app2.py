@@ -17,12 +17,13 @@ api_key = os.getenv("OPEN_AI_KEY")
 
 #initialising the chat
 
-
-if 'flow' not in session:
-    session['flow'] = [
-        SystemMessage(content="You are a financial adviser AI assistant")
-    ]
-
+@app.route('/')
+def home():
+    if 'flow' not in session:
+        session['flow'] = [
+            SystemMessage(content="You are a financial adviser AI assistant")
+        ]
+    return render_template('index.html')
 
 def get_openai_response(question):
     session['flow'].append(HumanMessage(content=question))
@@ -31,11 +32,6 @@ def get_openai_response(question):
     session['flow'].append(AIMessage(content=answer.content))
 
     return answer.content
-
-
-@app.route('/')
-def home():
-    return render_template('index.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
