@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: streamlit-chat
+Version: 0.0.1
+Summary: A streamlit component, to make chatbots
+Home-page: https://github.com/AI-Yash/st-chat
+Author: Yash Pravin Pawar, Yash Vardhan Kapil
+Author-email: yashpawarp@gmail.com, workid169@gmail.com
+License: UNKNOWN
+Keywords: chat streamlit streamlit-component
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/plain
+Requires-Dist: streamlit (>=0.63)
+
+# st-chat
+
+Streamlit Component, for a Chat bot UI
+authors - [@yashppawar](https://github.com/yashppawar) & [@YashVardhan-AI](https://github.com/yashvardhan-ai)
+
+### Under Testing Phase, will be released on pypi soon
+
+## Installation
+
+Install `streamlit-chat` with pip
+```bash
+ pip install streamlit-chat==0.0.1 
+```
+
+use
+```py
+import streamlit as st
+from streamlit_chat import message
+
+message("My message")
+```
+
+
+

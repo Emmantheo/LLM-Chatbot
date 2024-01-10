@@ -6,3 +6,4 @@ python-dotenv
 flask
 django
 Flask==2.3.2
+streamlit-chat==0.0.1
