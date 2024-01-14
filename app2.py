@@ -47,7 +47,9 @@ def chat():
          elif isinstance(msg, AIMessage):
               messages.append({'role': 'assistant', 'content': msg.content})
 
-    return jsonify({'response': response.content if hasattr(response, 'content') else str(response), 'messages': messages})
+    #return render_template('index.html', response=response, messages=messages)
+    return jsonify({'response':response, 'messages':messages})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
