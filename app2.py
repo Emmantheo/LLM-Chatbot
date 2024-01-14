@@ -38,17 +38,24 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    question = request.form.get('input', '')
+    input=None
+    if request.headers['Content-Type']=='application/json':
+        question = request.get_json()['input']
+    else:
+        question = request.form.get('input', '')
+
+    #get response
     response = get_openai_response(question)
     messages = []
     for msg in app.config['flow']:
-         if isinstance(msg, HumanMessage):
-              messages.append({'role': 'user', 'content': msg.content})
-         elif isinstance(msg, AIMessage):
-              messages.append({'role': 'assistant', 'content': msg.content})
+        if isinstance(msg, HumanMessage):
+            messages.append({'role': 'user', 'content': msg.content})
+        elif isinstance(msg, AIMessage):
+            messages.append({'role': 'assistant', 'content': msg.content})
 
     #return render_template('index.html', response=response, messages=messages)
     return jsonify({'response':response, 'messages':messages})
+
 
 
 if __name__ == '__main__':
