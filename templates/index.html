@@ -10,19 +10,21 @@
     <h1>Hey, Let's Chat</h1>
     <form action="/chat" method="post">
         <label for="input">Input:</label>
-        <input type="text" id="input" name="input_text" required>
+        <input type="text" id="input" name="input" required>
         <button type="submit">Ask Me</button>
     </form>
 
     <div id="chat-messages"></div>
 
-    {% for message in flow %}
-        {% if message.__class__.__name__ == "HumanMessage" %}
-            <p>You: {{ message.content }}</p>
-        {% elif message.__class__.__name__ == "AIMessage" %}
-            <p>AI: {{ message.content }}</p>
-        {% endif %}
-    {% endfor %}
+        {% for msg in messages %}
+            {% if msg.role == 'user' %}
+                <div style="text-align: right;">You: {{ msg.content }}</div>
+            {% elif msg.role == 'assistant' %}
+                <div style="text-align: left;">AI: {{ msg.content }}</div>
+            {% endif %}
+        {% endfor %}
+
+    </div>
     
 </body>
 </html>
