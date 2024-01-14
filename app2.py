@@ -4,7 +4,7 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.agents import initialize_agent, AgentType, load_tools
 from langchain.llms import OpenAI
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 import os
 
@@ -17,28 +17,37 @@ api_key = os.getenv("OPEN_AI_KEY")
 
 #initialising the chat
 
-@app.route('/')
-def home():
-    if 'flow' not in session:
-        session['flow'] = [
+if 'flow' not in app.config:
+        app.config['flow'] = [
             SystemMessage(content="You are a financial adviser AI assistant")
         ]
-    return render_template('index.html')
 
 def get_openai_response(question):
-    session['flow'].append(HumanMessage(content=question))
+    app.config['flow'].append(HumanMessage(content=question))
     chat = ChatOpenAI(api_key=api_key, temperature=0.5)
-    answer=chat(session['flow'])
-    session['flow'].append(AIMessage(content=answer.content))
+    answer=chat(app.config['flow'])
+    app.config['flow'].append(AIMessage(content=answer.content))
 
     return answer.content
 
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+
 @app.route('/chat', methods=['POST'])
 def chat():
-    input_text = request.form['input_text']
-    response = get_openai_response(input_text)
+    question = request.form.get('input', '')
+    response = get_openai_response(question)
+    messages = []
+    for msg in app.config['flow']:
+         if isinstance(msg, HumanMessage):
+              messages.append({'role': 'user', 'content': msg.content})
+         elif isinstance(msg, AIMessage):
+              messages.append({'role': 'assistant', 'content': msg.content})
 
-    return render_template('index.html', input_text=input_text, response=response)
+    return jsonify({'response': response.content if hasattr(response, 'content') else str(response), 'messages': messages})
 
 if __name__ == '__main__':
     app.run(debug=True)
