@@ -19,7 +19,9 @@ api_key = os.getenv("OPEN_AI_KEY")
 
 if 'flow' not in app.config:
         app.config['flow'] = [
-            SystemMessage(content="You are a financial adviser AI assistant")
+            SystemMessage(
+                content="You are a financial adviser AI assistant and also a Transaction assistant who help customers carry out bank transfers straight from the chat platform.You should also be able to help buy airtime, data and electricity units for customers"          
+                          )
         ]
 
 def get_openai_response(question):
@@ -51,7 +53,7 @@ def chat():
         if isinstance(msg, HumanMessage):
             messages.append({'role': 'user', 'content': msg.content})
         elif isinstance(msg, AIMessage):
-            messages.append({'role': 'assistant', 'content': msg.content})
+            messages.append({'role': 'ai', 'content': msg.content})
 
     #return render_template('index.html', response=response, messages=messages)
     return jsonify({'response':response, 'messages':messages})
