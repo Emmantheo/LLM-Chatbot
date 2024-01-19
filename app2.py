@@ -24,13 +24,13 @@ if 'flow' not in app.config:
                           )
         ]
 
-def get_openai_response(question):
-    app.config['flow'].append(HumanMessage(content=question))
-    chat = ChatOpenAI(api_key=api_key, temperature=0.5)
-    answer=chat(app.config['flow'])
-    app.config['flow'].append(AIMessage(content=answer.content))
+# def get_openai_response(question):
+#     app.config['flow'].append(HumanMessage(content=question))
+#     chat = ChatOpenAI(api_key=api_key, temperature=0.5)
+#     answer=chat(app.config['flow'])
+#     app.config['flow'].append(AIMessage(content=answer.content))
 
-    return answer.content
+#     return answer.content
 
 @app.route('/')
 def home():
@@ -45,9 +45,16 @@ def chat():
         question = request.get_json()['input']
     else:
         question = request.form.get('input', '')
+    
+    app.config['flow'].append(HumanMessage(content=question))
+    chat = ChatOpenAI(api_key=api_key, temperature=0.5)
+    answer = chat(app.config['flow'])
+    app.config['flow'].append(AIMessage(content=answer.content))
+
+    response = answer.content
 
     #get response
-    response = get_openai_response(question)
+    #response = get_openai_response(question)
     messages = []
     for msg in app.config['flow']:
         if isinstance(msg, HumanMessage):
