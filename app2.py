@@ -7,6 +7,9 @@ from langchain.llms import OpenAI
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 import os
+import logging
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 
 app = Flask(__name__)
@@ -52,6 +55,10 @@ def chat():
     app.config['flow'].append(AIMessage(content=answer.content))
 
     response = answer.content
+
+    # Log the question and response
+    logging.info(f"User question: {question}")
+    logging.info(f"AI response: {response}")
 
     #get response
     #response = get_openai_response(question)
