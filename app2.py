@@ -9,9 +9,17 @@ from dotenv import load_dotenv
 import os
 import logging
 
+
+
+# Loading environment variables from .env file
+load_dotenv()
+
+# Accessing environment variables
+host_no = os.getenv("host")
+port_no = os.getenv("port")
+debug_mode = os.getenv("DEBUG")
+
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
-
-
 app = Flask(__name__)
 
 # Loading environment variables from .env file
@@ -75,7 +83,7 @@ def chat():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=debug_mode, host=host_no, port=port_no)
 
 
 
