@@ -20,7 +20,7 @@
         }
 
         .chat-box {
-            background-color: #fff;
+            background-color: #0f0b0b;
             border-radius: 8px;
             overflow: hidden;
             margin: 20px;
@@ -38,11 +38,24 @@
         .chat-messages {
             padding: 15px;
             overflow-y: auto;
-            height: 300px;
+            height: 400px;
         }
 
         .message {
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Adjust the margin between messages as needed */
+            overflow: auto; /* Add overflow to handle long messages */
+        }
+
+        .user-message,
+        .ai-message {
+            margin-bottom: 5px; /* Adjust the margin between the message content and its container */
+        }
+
+        .user-message::after,
+        .ai-message::after {
+            content: "";
+            display: table;
+            clear: both;
         }
 
         .user-message {
